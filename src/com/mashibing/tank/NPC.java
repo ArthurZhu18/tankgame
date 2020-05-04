@@ -13,19 +13,68 @@ import java.util.Random;
  * @Version 1.0
  */
 
-public class NPC extends Tank {
+public class NPC extends AbstractGameObject {
+    private int x, y;
+    private Dir dir;
+    private boolean moving = true;
+    private Group group;
+    private boolean live = true;
+    private int wight,height;
     //tank moving speed
     public static final int SPEED = 5;
     private int oldX, oldY;
+    private Random r = new Random();
 
     public NPC(int x, int y, Dir dir) {
-        super(x, y, dir);
-        this.setMoving(true);
-        this.setGroup(Group.BAD);
-        oldX = x;
-        oldY = y;
-        this.setWight(ResourceManager.badTankU.getWidth());
-        this.setHeight(ResourceManager.badTankU.getHeight());
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.group = Group.BAD;
+        this.oldX = x;
+        this.oldY = y;
+        this.wight = ResourceManager.badTankU.getWidth();
+        this.height = ResourceManager.badTankU.getHeight();
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
     }
 
     @Override
@@ -33,42 +82,41 @@ public class NPC extends Tank {
 
         if (!this.isLive()) return;
 
-        switch (this.getDir()) {
+        switch (dir) {
             case UP:
-                g.drawImage(ResourceManager.badTankU, this.getX(), this.getY(), null);
+                g.drawImage(ResourceManager.badTankU, this.x, this.y, null);
                 break;
             case DOWN:
-                g.drawImage(ResourceManager.badTankD, this.getX(), this.getY(), null);
+                g.drawImage(ResourceManager.badTankD, this.x, this.y, null);
                 break;
             case LEFT:
-                g.drawImage(ResourceManager.badTankL, this.getX(), this.getY(), null);
+                g.drawImage(ResourceManager.badTankL, this.x, this.y, null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceManager.badTankR, this.getX(), this.getY(), null);
+                g.drawImage(ResourceManager.badTankR, this.x, this.y, null);
         }
 
         move();
 
     }
 
-    @Override
     public void move() {
-        if ( !this.isMoving() ) return;
-        oldX = getX();
-        oldY = getY();
+        if ( !this.moving ) return;
+        oldX = x;
+        oldY = y;
 
-        switch (this.getDir()){
+        switch (dir){
             case UP:
-                this.setY(this.getY()-SPEED);
+                y-=SPEED;
                 break;
             case DOWN:
-                this.setY(this.getY()+SPEED);
+                y+=SPEED;
                 break;
             case LEFT:
-                this.setX(this.getX()-SPEED);
+                x-=SPEED;
                 break;
             case RIGHT:
-                this.setX(this.getX()+SPEED);
+                x+=SPEED;
                 break;
         }
 
@@ -84,7 +132,7 @@ public class NPC extends Tank {
      * @Param []
      * @return void
      **/
-    private Random r = new Random();
+
     private void randomDir() {
         if(r.nextInt(100)>90)
             this.setDir(Dir.randomDir());
@@ -97,20 +145,26 @@ public class NPC extends Tank {
      * @return void
      **/
     private void boundsCheck() {
-        if (getX()<0 || getY()<30 || getX() + getWight()>TankFrame.GAME_WIDTH
-                || getY() + getHeight()>TankFrame.GAME_HEIGHT){
+        if (x<0 || y<30 || x + wight>TankFrame.GAME_WIDTH
+                || y + height>TankFrame.GAME_HEIGHT){
             this.back();
         }
     }
 
     private void back() {
-        this.setX(oldX);
-        this.setY(oldY);
+        this.x = oldX;
+        this.y = oldY;
     }
 
-    @Override
     public void fire() {
-        FireStrategy strategy = new DefaultFireStrategy();
-        strategy.fire(this);
+        int bX = x + wight / 2 - Bullet.W / 2;
+        int bY = y + height / 2 - Bullet.H / 2;
+
+        TankFrame.INSTANCE.add(new Bullet(bX, bY, dir, group));
+    }
+
+    public void die() {
+        live = false;
+        TankFrame.INSTANCE.add( new Explode(x ,y));
     }
 }

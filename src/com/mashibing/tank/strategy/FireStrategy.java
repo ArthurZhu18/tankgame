@@ -1,7 +1,6 @@
 package com.mashibing.tank.strategy;
 
 import com.mashibing.tank.Player;
-import com.mashibing.tank.Tank;
 
 /**
  * @ClassName AbstractFireStrategy
@@ -11,5 +10,5 @@ import com.mashibing.tank.Tank;
  */
 
 public interface FireStrategy {
-    public void fire(Tank t);
+    public void fire(Player p);
 }

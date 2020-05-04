@@ -9,7 +9,7 @@ import java.awt.*;
  * @Version 1.0
  */
 
-public class Explode {
+public class Explode extends AbstractGameObject {
 
     private int x, y;
     private int width, height;

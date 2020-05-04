@@ -9,12 +9,14 @@ import java.awt.*;
  * @Version 1.0
  */
 
-public class Bullet {
+public class Bullet extends AbstractGameObject {
 
     private int x, y;
     private Dir dir;
     private boolean live = true;
     private Group group;
+    public static final int W = ResourceManager.bulletU.getWidth();
+    public static final int H = ResourceManager.bulletU.getHeight();
     public static final int SPEED = 3;
 
     public boolean isLive() {
@@ -37,6 +39,7 @@ public class Bullet {
      * @Param [g]
      * @return void
      **/
+    @Override
     public void paint(Graphics g) {
         switch (dir) {
             case UP:
@@ -61,6 +64,7 @@ public class Bullet {
      * @return void
      **/
     private void move() {
+
         switch (dir){
             case UP:
                 y -= SPEED;
@@ -84,8 +88,8 @@ public class Bullet {
      * @Param [tank]
      * @return void
      **/
-    public void collidedWithTank(Tank tank){
-        if ( this.isLive() || !tank.isLive()) return;
+    public void collidedWithTank(Player tank){
+        if ( !this.isLive() || !tank.isLive()) return;
         if (this.group == tank.getGroup()) return;
 
         Rectangle rectBullet = new Rectangle(x, y,
@@ -95,6 +99,22 @@ public class Bullet {
 
         if (rectBullet.intersects(rectTank)){
 
+            this.die();
+            tank.die();
+        }
+
+    }
+
+    public void collidedWithTank(NPC tank){
+        if ( !this.isLive() || !tank.isLive()) return;
+        if (this.group == tank.getGroup()) return;
+
+        Rectangle rectBullet = new Rectangle(x, y,
+                ResourceManager.bulletU.getWidth(),ResourceManager.bulletU.getHeight());
+        Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(),
+                ResourceManager.goodTankU.getWidth(),ResourceManager.goodTankU.getHeight());
+
+        if (rectBullet.intersects(rectTank)){
             this.die();
             tank.die();
         }

@@ -9,7 +9,7 @@ import java.awt.*;
  * @Version 1.0
  */
 
-public class Wall {
+public class Wall extends AbstractGameObject {
     private int x, y, wight, height;
 
     public Wall(int x, int y, int wight, int height) {
@@ -19,11 +19,11 @@ public class Wall {
         this.height = height;
     }
 
-    public void print(Graphics g){
+    @Override
+    public void paint(Graphics g) {
         Color c = g.getColor();
-        g.setColor(Color.GREEN);
+        g.setColor(Color.GRAY);
         g.fillRect(x, y, wight, height);
         g.setColor(c);
     }
-
 }

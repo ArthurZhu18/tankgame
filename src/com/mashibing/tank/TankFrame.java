@@ -23,9 +23,7 @@ public class TankFrame extends Frame {
     Image offScreenImage = null;
     private Player myTank;
 
-    private List<NPC> npcs;
-    private List<Bullet> bullets;
-    private List<Explode> explodes;
+    private List<AbstractGameObject> objects;
 
     /*
      * @Description //only self can be create self, using singleton pattern
@@ -50,15 +48,15 @@ public class TankFrame extends Frame {
     private void intiGameObjects() {
         myTank = new Player(400, 500, Dir.UP);
 
-        bullets = new ArrayList<>();
-        npcs = new ArrayList<>();
-        explodes = new ArrayList<>();
+        objects = new ArrayList<>();
 
         int tankCount = Integer.parseInt(PropertyManager.get("initNPCTankCount"));
 
         for (int i = 0; i < tankCount; i++) {
-            npcs.add(new NPC(100+i*100, 100, Dir.DOWN));
+            objects.add(new NPC(100+i*100, 100, Dir.DOWN));
         }
+
+        this.add(new Wall(300,200,50,10));
 
     }
 
@@ -69,8 +67,8 @@ public class TankFrame extends Frame {
      * @Param [bullet]
      * @return void
      **/
-    public void add(Bullet bullet){
-        this.bullets.add(bullet);
+    public void add(AbstractGameObject go){
+        objects.add(go);
     }
 
     /*
@@ -83,13 +81,17 @@ public class TankFrame extends Frame {
 
         Color c = g.getColor();
         g.setColor(Color.WHITE);
-        g.drawString("bullets:"+bullets.size(), 10, 50);
-        g.drawString("npcs:"+npcs.size(), 10, 80);
+        /*g.drawString("bullets:"+bullets.size(), 10, 50);
+        g.drawString("npcs:"+npcs.size(), 10, 80);*/
         g.setColor(c);
 
         myTank.paint(g);
 
-        for (int i = 0; i < npcs.size(); i++) {
+        for (int i = 0; i < objects.size(); i++) {
+            objects.get(i).paint(g);
+        }
+
+       /* for (int i = 0; i < npcs.size(); i++) {
             if (!npcs.get(i).isLive()){
                 npcs.remove(i);
             }else {
@@ -106,7 +108,7 @@ public class TankFrame extends Frame {
             //npcs tank attack myTank
             bullets.get(i).collidedWithTank(myTank);
 
-            if (bullets.get(i).isLive()){
+            if (!bullets.get(i).isLive()){
                 bullets.remove(i);
             } else{
                 bullets.get(i).paint(g);
@@ -120,7 +122,7 @@ public class TankFrame extends Frame {
             }else {
                 explodes.get(i).paint(g);
             }
-        }
+        }*/
     }
 
 
@@ -142,10 +144,6 @@ public class TankFrame extends Frame {
         gOffScreen.setColor(c);
         paint(gOffScreen);
         g.drawImage(offScreenImage, 0, 0, null);
-    }
-
-    public void add(Explode explode) {
-        this.explodes.add(explode);
     }
 
     /*

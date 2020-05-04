@@ -13,17 +13,71 @@ import java.lang.reflect.InvocationTargetException;
  * @Version 1.0
  */
 
-public class Player extends Tank {
-
-    //ensure direction
+public class Player extends AbstractGameObject {
+    private int x, y;
+    private Dir dir;
+    private boolean moving;
+    private Group group;
+    private boolean live = true;
+    private int wight,height;
     private boolean bUp, bDown, bLeft, bRight;
-    //tank moving speed
     public static final int SPEED = 5;
 
+
     public Player(int x, int y, Dir dir) {
-        super(x, y, dir);
-        this.setGroup(Group.GOOD);
-        this.setMoving(false);
+        this.x = x;
+        this.y = y;
+        this.dir = dir;
+        this.group=Group.GOOD;
+        this.moving=false;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
+
+    public Dir getDir() {
+        return dir;
+    }
+
+    public void setDir(Dir dir) {
+        this.dir = dir;
+    }
+
+    public boolean isMoving() {
+        return moving;
+    }
+
+    public void setMoving(boolean moving) {
+        this.moving = moving;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
     }
 
 
@@ -36,18 +90,18 @@ public class Player extends Tank {
     public void paint(Graphics g) {
         if (!this.isLive()) return;
 
-        switch (this.getDir()) {
+        switch (dir) {
             case UP:
-                g.drawImage(ResourceManager.goodTankU, this.getX(), this.getY(), null);
+                g.drawImage(ResourceManager.goodTankU, this.x, this.y, null);
                 break;
             case DOWN:
-                g.drawImage(ResourceManager.goodTankD, this.getX(), this.getY(), null);
+                g.drawImage(ResourceManager.goodTankD, this.x, this.y, null);
                 break;
             case LEFT:
-                g.drawImage(ResourceManager.goodTankL, this.getX(), this.getY(), null);
+                g.drawImage(ResourceManager.goodTankL, this.x, this.y, null);
                 break;
             case RIGHT:
-                g.drawImage(ResourceManager.goodTankR, this.getX(), this.getY(), null);
+                g.drawImage(ResourceManager.goodTankR, this.x, this.y, null);
         }
 
         move();
@@ -126,18 +180,18 @@ public class Player extends Tank {
     private void setMainDir() {
 //        all direction keys are released, tank should be stop.
         if(!bUp && !bDown && !bLeft && !bRight)
-            setMoving(false);
+            moving = false;
 //        any direction keys are pressed, tank should be moving.
         else {
-            setMoving(true);
+            moving = true;
             if (bUp && !bDown && !bLeft && !bRight)
-                setDir(Dir.UP);
+                dir=Dir.UP;
             if (!bUp && bDown && !bLeft && !bRight)
-                setDir(Dir.DOWN);
+                dir=Dir.DOWN;
             if (!bUp && !bDown && bLeft && !bRight)
-                setDir(Dir.LEFT);
+                dir=Dir.LEFT;
             if (!bUp && !bDown && !bLeft && bRight)
-                setDir(Dir.RIGHT);
+                dir=Dir.RIGHT;
         }
     }
 
@@ -147,20 +201,20 @@ public class Player extends Tank {
      * @return void
      **/
     public void move() {
-        if ( !isMoving() ) return;
+        if ( !moving ) return;
 
-        switch (getDir()){
+        switch (dir){
             case UP:
-                this.setY(this.getY()-SPEED);
+                y-=SPEED;
                 break;
             case DOWN:
-                this.setY(this.getY()+SPEED);
+                y+=SPEED;
                 break;
             case LEFT:
-                this.setX(this.getX()-SPEED);
+                x-=SPEED;
                 break;
             case RIGHT:
-                this.setX(this.getX()+SPEED);
+                x+=SPEED;
                 break;
         }
     }
@@ -186,10 +240,15 @@ public class Player extends Tank {
     }
 
 
-    @Override
     public void fire() {
         this.intiFireStrategy();
+
         fireStrategy.fire(this);
+    }
+
+    public void die() {
+        this.setLive(false);
+        TankFrame.INSTANCE.add( new Explode(x ,y));
     }
 
 }
