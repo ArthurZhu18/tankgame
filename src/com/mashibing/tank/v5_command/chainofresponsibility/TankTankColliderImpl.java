@@ -1,22 +1,17 @@
-package com.mashibing.tank.v1_singleten_observer.chainofresponsibility;
+package com.mashibing.tank.v5_command.chainofresponsibility;
 
-import com.mashibing.tank.v1_singleten_observer.AbstractGameObject;
-import com.mashibing.tank.v1_singleten_observer.NPC;
+import com.mashibing.tank.v5_command.AbstractGameObject;
+import com.mashibing.tank.v5_command.NPC;
 
 /**
  * @ClassName TankTankColliderImpl
- * @Description //collide between Tank and Tank
+ * @Description //TODO
  * @Author ArthurZhu
  * @Version 1.0
  */
 
 public class TankTankColliderImpl implements Collider {
 
-    /*
-     * @Description //is judge NPC and NPC collide.
-     * @Param [go1, go2]
-     * @return boolean
-     **/
     @Override
     public boolean collide(AbstractGameObject go1, AbstractGameObject go2) {
         if(go1 != go2 && go1 instanceof NPC && go2 instanceof NPC) {

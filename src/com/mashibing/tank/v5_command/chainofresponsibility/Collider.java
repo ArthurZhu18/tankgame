@@ -1,6 +1,6 @@
-package com.mashibing.tank.v4_facade_Mediator.chainofresponsibility;
+package com.mashibing.tank.v5_command.chainofresponsibility;
 
-import com.mashibing.tank.v4_facade_Mediator.AbstractGameObject;
+import com.mashibing.tank.v5_command.AbstractGameObject;
 
 import java.io.Serializable;
 
