@@ -1,5 +1,6 @@
 #key-value pair
 initNPCTankCount=5
+initLandmineCount=5
 frameWidth=800
 frameHeight=600
 #DefaultFireStrategy 默认
