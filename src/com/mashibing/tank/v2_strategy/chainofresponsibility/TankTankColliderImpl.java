@@ -1,8 +1,7 @@
 package com.mashibing.tank.v2_strategy.chainofresponsibility;
 
-import com.mashibing.tank.v4_facade_Mediator.AbstractGameObject;
-import com.mashibing.tank.v4_facade_Mediator.NPC;
-import com.mashibing.tank.v4_facade_Mediator.chainofresponsibility.Collider;
+import com.mashibing.tank.v2_strategy.AbstractGameObject;
+import com.mashibing.tank.v2_strategy.NPC;
 
 /**
  * @ClassName TankTankColliderImpl

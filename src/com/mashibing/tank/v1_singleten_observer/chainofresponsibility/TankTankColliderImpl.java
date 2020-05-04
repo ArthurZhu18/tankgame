@@ -1,8 +1,7 @@
 package com.mashibing.tank.v1_singleten_observer.chainofresponsibility;
 
-import com.mashibing.tank.v4_facade_Mediator.AbstractGameObject;
-import com.mashibing.tank.v4_facade_Mediator.NPC;
-import com.mashibing.tank.v4_facade_Mediator.chainofresponsibility.Collider;
+import com.mashibing.tank.v1_singleten_observer.AbstractGameObject;
+import com.mashibing.tank.v1_singleten_observer.NPC;
 
 /**
  * @ClassName TankTankColliderImpl
