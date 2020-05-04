@@ -34,8 +34,7 @@ public class BulletTankColliderImpl implements Collider {
                 return false;
             }
 
-
-            b.collidedWithTank(npc);
+//            b.collidedWithTank(npc);
         }else if (go1 instanceof NPC && go2 instanceof Bullet){
             return collide(go2,go1);
         }

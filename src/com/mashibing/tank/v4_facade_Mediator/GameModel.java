@@ -3,6 +3,7 @@ package com.mashibing.tank.v4_facade_Mediator;
 import com.mashibing.tank.v4_facade_Mediator.chainofresponsibility.ColliderChain;
 
 import java.awt.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * @Version 1.0
  */
 
-public class GameModel {
+public class GameModel implements Serializable {
     private Player myTank;
 
     private List<AbstractGameObject> objects;
@@ -70,11 +71,13 @@ public class GameModel {
         myTank.paint(g);
 
         for (int i = 0; i < objects.size(); i++) {
-
             if (!objects.get(i).isLive()) {
                 objects.remove(i);
                 break;
             }
+        }
+
+        for (int i = 0; i < objects.size(); i++) {
 
             AbstractGameObject go1 = objects.get(i);
             for (int j = 0; j < objects.size(); j++) {
