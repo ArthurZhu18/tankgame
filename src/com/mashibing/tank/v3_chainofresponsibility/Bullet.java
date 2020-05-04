@@ -96,28 +96,6 @@ public class Bullet extends AbstractGameObject {
         boundsCheck();
     }
 
-    /*
-     * @Description // Is the judge bullet and tank collided?
-     * @Param [tank]
-     * @return void
-     **/
-    /*public void collidedWithTank(Player tank){
-        if ( !this.isLive() || !tank.isLive()) return;
-        if (this.group == tank.getGroup()) return;
-
-        Rectangle rectBullet = new Rectangle(x, y,
-                ResourceManager.bulletU.getWidth(),ResourceManager.bulletU.getHeight());
-        Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(),
-                ResourceManager.goodTankU.getWidth(),ResourceManager.goodTankU.getHeight());
-
-        if (rectBullet.intersects(rectTank)){
-
-            this.die();
-            tank.die();
-        }
-
-    }*/
-
     public void collidedWithTank(NPC tank){
 
     }

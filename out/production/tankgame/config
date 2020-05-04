@@ -7,4 +7,4 @@ frameHeight=600
 #TwoDirFireLRStrategy 两个方向左右
 #TwoDirFireUDStrategy 两个方向上下
 strategy=DefaultFireStrategy
-colliders=BulletWallColliderImpl,BulletTankColliderImpl,TankWallColliderImpl
+colliders=BulletWallColliderImpl,BulletTankColliderImpl,TankWallColliderImpl,TankTankColliderImpl

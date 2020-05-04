@@ -26,7 +26,7 @@ public class ColliderChain implements Collider {
         String[] collidersNames = PropertyManager.get("colliders").split(",");
         try {
             for (String name : collidersNames) {
-                Class clazz = Class.forName("com.mashibing.tank.v1.chainofresponsibility."+ name);
+                Class clazz = Class.forName("com.mashibing.tank.v3_chainofresponsibility.chainofresponsibility."+ name);
                 Collider c = (Collider) clazz.getConstructor().newInstance();
                 colliders.add(c);
             }
