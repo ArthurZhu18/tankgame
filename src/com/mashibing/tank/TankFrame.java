@@ -1,8 +1,14 @@
 package com.mashibing.tank;
 
+import com.mashibing.tank.chainofresponsibility.BulletTankColliderImpl;
+import com.mashibing.tank.chainofresponsibility.BulletWallColliderImpl;
+import com.mashibing.tank.chainofresponsibility.Collider;
+import com.mashibing.tank.chainofresponsibility.ColliderChain;
+
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +31,9 @@ public class TankFrame extends Frame {
 
     private List<AbstractGameObject> objects;
 
+    ColliderChain chain;
+
+
     /*
      * @Description //only self can be create self, using singleton pattern
      * @Param []
@@ -43,12 +52,16 @@ public class TankFrame extends Frame {
 
         intiGameObjects();
 
+
     }
+
+
 
     private void intiGameObjects() {
         myTank = new Player(400, 500, Dir.UP);
 
         objects = new ArrayList<>();
+        chain = new ColliderChain();
 
         int tankCount = Integer.parseInt(PropertyManager.get("initNPCTankCount"));
 
@@ -56,7 +69,7 @@ public class TankFrame extends Frame {
             objects.add(new NPC(100+i*100, 100, Dir.DOWN));
         }
 
-        this.add(new Wall(300,200,50,10));
+        this.add(new Wall(300,200,100,30));
 
     }
 
@@ -70,6 +83,7 @@ public class TankFrame extends Frame {
     public void add(AbstractGameObject go){
         objects.add(go);
     }
+
 
     /*
      * @Description //painting，awt system automatic calling
@@ -88,41 +102,26 @@ public class TankFrame extends Frame {
         myTank.paint(g);
 
         for (int i = 0; i < objects.size(); i++) {
-            objects.get(i).paint(g);
-        }
 
-       /* for (int i = 0; i < npcs.size(); i++) {
-            if (!npcs.get(i).isLive()){
-                npcs.remove(i);
-            }else {
-                npcs.get(i).paint(g);
-            }
-        }
-
-        for (int i = 0; i < bullets.size(); i++) {
-            //myTank rank attack npcs
-            for (int j = 0; j < npcs.size(); j++) {
-                bullets.get(i).collidedWithTank(npcs.get(j));
+            if (!objects.get(i).isLive()) {
+                objects.remove(i);
+                break;
             }
 
-            //npcs tank attack myTank
-            bullets.get(i).collidedWithTank(myTank);
+            AbstractGameObject go1 = objects.get(i);
+            for (int j = 0; j < objects.size(); j++) {
+                AbstractGameObject go2 = objects.get(j);
 
-            if (!bullets.get(i).isLive()){
-                bullets.remove(i);
-            } else{
-                bullets.get(i).paint(g);
+                chain.collide(go1, go2);
+
+            }
+
+            if (objects.get(i).isLive()) {
+                objects.get(i).paint(g);
             }
         }
 
 
-        for (int i = 0; i < explodes.size(); i++) {
-            if (!explodes.get(i).isLive()){
-                explodes.remove(i);
-            }else {
-                explodes.get(i).paint(g);
-            }
-        }*/
     }
 
 

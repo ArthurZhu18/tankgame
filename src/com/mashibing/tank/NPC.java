@@ -24,6 +24,7 @@ public class NPC extends AbstractGameObject {
     public static final int SPEED = 5;
     private int oldX, oldY;
     private Random r = new Random();
+    private Rectangle rectTank;
 
     public NPC(int x, int y, Dir dir) {
         this.x = x;
@@ -34,6 +35,7 @@ public class NPC extends AbstractGameObject {
         this.oldY = y;
         this.wight = ResourceManager.badTankU.getWidth();
         this.height = ResourceManager.badTankU.getHeight();
+        this.rectTank = new Rectangle(x, y, wight, height);
     }
 
     public int getX() {
@@ -98,6 +100,10 @@ public class NPC extends AbstractGameObject {
 
         move();
 
+        //update the rectTank location
+        rectTank.x = x;
+        rectTank.y = y;
+
     }
 
     public void move() {
@@ -151,7 +157,7 @@ public class NPC extends AbstractGameObject {
         }
     }
 
-    private void back() {
+    public void back() {
         this.x = oldX;
         this.y = oldY;
     }
@@ -166,5 +172,9 @@ public class NPC extends AbstractGameObject {
     public void die() {
         live = false;
         TankFrame.INSTANCE.add( new Explode(x ,y));
+    }
+
+    public Rectangle getRect() {
+        return rectTank;
     }
 }

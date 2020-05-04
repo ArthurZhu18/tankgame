@@ -15,9 +15,14 @@ public class Bullet extends AbstractGameObject {
     private Dir dir;
     private boolean live = true;
     private Group group;
+    private int w = ResourceManager.bulletU.getWidth();
+    private int h = ResourceManager.bulletU.getHeight();
+
     public static final int W = ResourceManager.bulletU.getWidth();
     public static final int H = ResourceManager.bulletU.getHeight();
     public static final int SPEED = 3;
+
+    private Rectangle rectBullet;
 
     public boolean isLive() {
         return this.live;
@@ -32,6 +37,8 @@ public class Bullet extends AbstractGameObject {
         this.y = y;
         this.dir = dir;
         this.group = group;
+
+        this.rectBullet = new Rectangle(x, y, w, h);
     }
 
     /*
@@ -56,6 +63,10 @@ public class Bullet extends AbstractGameObject {
         }
 
         move();
+
+        //update rect location
+        rectBullet.x = x;
+        rectBullet.y = y;
     }
 
     /*
@@ -80,6 +91,8 @@ public class Bullet extends AbstractGameObject {
                 break;
         }
 
+
+
         boundsCheck();
     }
 
@@ -88,7 +101,7 @@ public class Bullet extends AbstractGameObject {
      * @Param [tank]
      * @return void
      **/
-    public void collidedWithTank(Player tank){
+    /*public void collidedWithTank(Player tank){
         if ( !this.isLive() || !tank.isLive()) return;
         if (this.group == tank.getGroup()) return;
 
@@ -103,28 +116,23 @@ public class Bullet extends AbstractGameObject {
             tank.die();
         }
 
-    }
+    }*/
 
     public void collidedWithTank(NPC tank){
-        if ( !this.isLive() || !tank.isLive()) return;
-        if (this.group == tank.getGroup()) return;
-
-        Rectangle rectBullet = new Rectangle(x, y,
-                ResourceManager.bulletU.getWidth(),ResourceManager.bulletU.getHeight());
-        Rectangle rectTank = new Rectangle(tank.getX(), tank.getY(),
-                ResourceManager.goodTankU.getWidth(),ResourceManager.goodTankU.getHeight());
-
-        if (rectBullet.intersects(rectTank)){
-            this.die();
-            tank.die();
-        }
 
     }
 
-    private void die() {
+    public Rectangle getRect(){
+        return rectBullet;
+    }
+
+    public void die() {
         this.setLive(false);
     }
 
+    public Group getGroup() {
+        return group;
+    }
 
     /*
      * @Description //while bullet across the border of TankFrame,
@@ -138,4 +146,18 @@ public class Bullet extends AbstractGameObject {
         }
     }
 
+
+    @Override
+    public String toString() {
+        return "Bullet{" +
+                "x=" + x +
+                ", y=" + y +
+                ", dir=" + dir +
+                ", live=" + live +
+                ", group=" + group +
+                ", w=" + w +
+                ", h=" + h +
+                ", rectBullet=" + rectBullet +
+                '}';
+    }
 }
