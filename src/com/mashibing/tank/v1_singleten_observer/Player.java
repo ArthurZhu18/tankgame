@@ -226,7 +226,7 @@ public class Player extends AbstractGameObject {
         ClassLoader loader = Player.class.getClassLoader();
         try {
 //            Class clazz = Class.forName("com.mashibing.tank.v1.strategy."+strategy);
-            Class clazz = loader.loadClass("com.mashibing.tank.v1_singleten.strategy."+strategy);
+            Class clazz = loader.loadClass("com.mashibing.tank.v1_singleten_observer.strategy."+strategy);
             fireStrategy =  (FireStrategy)(clazz.getDeclaredConstructor().newInstance());
         } catch (ClassNotFoundException | NoSuchMethodException e) {
             e.printStackTrace();
